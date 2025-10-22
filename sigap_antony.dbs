@@ -946,15 +946,16 @@ AS '$libdir/tablefunc', $function$normal_rand$function$
 		</table>
 		<table name="prueba" generator_rows="50" generator_order="0" spec="" >
 			<column name="n_prueba_pk" type="integer" length="32" mandatory="y" />
-			<column name="nombre" type="varchar" length="100" regexp="list:file=NamesFirst.txt" regexp_nulls="10" />
-			<column name="apellido" type="varchar" length="100" regexp="list:file=NamesLast.txt" />
-			<column name="edad" type="integer" length="32" regexp="int:from=0;to=99;" />
-			<column name="correo" type="varchar" length="150" regexp="[a-z]{4,8}([0-9]{0,3}|.[a-z]{4,10})@example.com" />
-			<column name="telefono" type="varchar" length="20" regexp="[0-9]{3}(-)[0-9]{3}(-)[0-9]{4}" regexp_nulls="10" />
-			<column name="direccion" type="varchar" length="200" regexp="((APT|Appartment) [1-9][0-9]{0,2})|(Suite [1-9][0-9]{0,3})|((1st|2nd|3rd|[4-9]th|[1-9]{2,3}th) Floor)|((Sales|Customer|After Sales|Pre Sales|Post Sales) (Group|Department))|((Lincoln|Washington|Jefferson|Roosevelt|Hamilton|Franklin|Marshall|Edison|Wilson|Madison|Roosevelt|Truman|Einstein|Anthony|Sanger|Foster) Building)" />
-			<column name="ciudad" type="varchar" length="100" regexp="list:file=Country.txt" />
-			<column name="salario" type="decimal" length="10" decimal="2" regexp="double:from=0;to=10000;format=########.##;" />
-			<column name="fecha_registro" type="date" length="0" regexp="date:from=&#039;01.01.2023&#039;;to=&#039;01.01.2025&#039;;" />
+			<column name="c_nombre" prior="nombre" type="varchar" length="100" regexp="list:file=NamesFirst.txt" regexp_nulls="10" />
+			<column name="c_apellido" prior="apellido" type="varchar" length="100" regexp="list:file=NamesLast.txt" />
+			<column name="n_edad" prior="edad" type="integer" length="32" regexp="int:from=0;to=99;" />
+			<column name="c_correo" prior="correo" type="varchar" length="150" regexp="[a-z]{4,8}([0-9]{0,3}|.[a-z]{4,10})@example.com" />
+			<column name="c_telefono" prior="telefono" type="varchar" length="20" regexp="[0-9]{3}(-)[0-9]{3}(-)[0-9]{4}" regexp_nulls="10" />
+			<column name="c_direccion" prior="direccion" type="varchar" length="200" regexp="((APT|Appartment) [1-9][0-9]{0,2})|(Suite [1-9][0-9]{0,3})|((1st|2nd|3rd|[4-9]th|[1-9]{2,3}th) Floor)|((Sales|Customer|After Sales|Pre Sales|Post Sales) (Group|Department))|((Lincoln|Washington|Jefferson|Roosevelt|Hamilton|Franklin|Marshall|Edison|Wilson|Madison|Roosevelt|Truman|Einstein|Anthony|Sanger|Foster) Building)" />
+			<column name="c_ciudad" prior="ciudad" type="varchar" length="100" regexp="list:file=Country.txt" />
+			<column name="n_salario" prior="salario" type="decimal" length="10" decimal="2" regexp="double:from=0;to=10000;format=########.##;" />
+			<column name="d_fecha_registro" prior="fecha_registro" type="date" length="0" regexp="date:from=&#039;01.01.2023&#039;;to=&#039;01.01.2025&#039;;" />
+			<column name="checksum" type="serial" />
 			<index name="prueba_pkey" unique="PRIMARY_KEY" >
 				<column name="n_prueba_pk" />
 			</index>
@@ -5029,7 +5030,7 @@ select * from (
 			<string><![CDATA[CREATE TRIGGER trg_incrementar_secuencia_solicitud_personal BEFORE INSERT ON sigap_anthony.cab_solicitud FOR EACH ROW EXECUTE FUNCTION sigap_anthony.fn_incrementar_secuencia_anual()]]></string>
 		</trigger>
 	</schema>
-	<layout name="sigap_anthony" id="ec5bc460-48bd-47ca-a38a-69ce8d66324e" show_column_type="y" show_relation="columns" >
+	<layout name="sigap_anthony" id="ec5bc460-48bd-47ca-a38a-69ce8d66324e" joined_routing="y" show_relation="columns" >
 		<entity schema="sigap.sigap_anthony" name="cab_carga_archivo" color="BED3F4" x="2508" y="4085" />
 		<entity schema="sigap.sigap_anthony" name="cab_catalogo" color="BED3F4" x="1140" y="4446" />
 		<entity schema="sigap.sigap_anthony" name="cab_formato_plantilla" color="BED3F4" x="1824" y="4541" />
@@ -5046,7 +5047,7 @@ select * from (
 		<entity schema="sigap.sigap_anthony" name="mae_cargo" color="F4DDBE" x="399" y="1140" />
 		<entity schema="sigap.sigap_anthony" name="mae_empresa_proveedor" color="F4DDBE" x="741" y="817" />
 		<entity schema="sigap.sigap_anthony" name="mae_unidad_organica" color="F4DDBE" x="57" y="1140" />
-		<entity schema="sigap.sigap_anthony" name="tab_actualizar_vigencia_personal" color="BED3F4" x="1045" y="2470" />
+		<entity schema="sigap.sigap_anthony" name="tab_actualizar_vigencia_personal" color="BED3F4" x="969" y="2508" />
 		<entity schema="sigap.sigap_anthony" name="tab_archivo" color="BEBEF4" x="3553" y="4218" />
 		<entity schema="sigap.sigap_anthony" name="tab_contador_tipo_solicitud" color="C7F4BE" x="3629" y="2261" />
 		<entity schema="sigap.sigap_anthony" name="tab_contrato" color="F4DDBE" x="741" y="1463" />
@@ -5057,19 +5058,18 @@ select * from (
 		<entity schema="sigap.sigap_anthony" name="tab_fecha_restriccion" color="C7F4BE" x="3971" y="2261" />
 		<entity schema="sigap.sigap_anthony" name="tab_log" color="BEBEF4" x="2945" y="4218" />
 		<entity schema="sigap.sigap_anthony" name="tab_parametro" color="C7F4BE" x="3629" y="2508" />
-		<entity schema="sigap.sigap_anthony" name="tab_proceso_electoral" color="C7F4BE" x="3287" y="2508" />
 		<entity schema="sigap.sigap_anthony" name="tab_responsable" color="BEBEF4" x="3895" y="4617" />
 		<entity schema="sigap.sigap_anthony" name="tab_solicitud_evaluacion" color="BEBEF4" x="3895" y="4218" />
 		<entity schema="sigap.sigap_anthony" name="tab_usuario" color="F4DDBE" x="399" y="817" />
 		<entity schema="sigap.sigap_anthony" name="tab_vehiculo" color="BEBEF4" x="2869" y="3819" />
-		<entity schema="sigap.sigap_anthony" name="temp_exact_conflicts_com_2" color="BED3F4" x="1425" y="2470" />
-		<entity schema="sigap.sigap_anthony" name="temp_exact_conflicts_je_2" color="BED3F4" x="1045" y="2983" />
-		<entity schema="sigap.sigap_anthony" name="tmp_mae_cargo" color="BED3F4" x="1425" y="2793" />
-		<entity schema="sigap.sigap_anthony" name="tmp_mae_unidad_organica" color="BED3F4" x="1045" y="2090" />
-		<entity schema="sigap.sigap_anthony" name="tmp_tab_personal_cas_cap" color="BED3F4" x="703" y="2147" />
-		<entity schema="sigap.sigap_anthony" name="tmp_tab_proceso_electoral" color="BED3F4" x="1425" y="2052" />
-		<entity schema="sigap.sigap_anthony" name="vn_carga_pk" color="BED3F4" x="1045" y="2793" />
-		<entity schema="sigap.sigap_anthony" name="vw_carga_masiva_comisicion_de_servicio" color="BED3F4" x="646" y="2793" />
+		<entity schema="sigap.sigap_anthony" name="temp_exact_conflicts_com_2" color="BED3F4" x="1349" y="2508" />
+		<entity schema="sigap.sigap_anthony" name="temp_exact_conflicts_je_2" color="BED3F4" x="969" y="3021" />
+		<entity schema="sigap.sigap_anthony" name="tmp_mae_cargo" color="BED3F4" x="1349" y="2831" />
+		<entity schema="sigap.sigap_anthony" name="tmp_mae_unidad_organica" color="BED3F4" x="969" y="2128" />
+		<entity schema="sigap.sigap_anthony" name="tmp_tab_personal_cas_cap" color="BED3F4" x="627" y="2185" />
+		<entity schema="sigap.sigap_anthony" name="tmp_tab_proceso_electoral" color="BED3F4" x="1349" y="2090" />
+		<entity schema="sigap.sigap_anthony" name="vn_carga_pk" color="BED3F4" x="969" y="2831" />
+		<entity schema="sigap.sigap_anthony" name="vw_carga_masiva_comisicion_de_servicio" color="BED3F4" x="570" y="2831" />
 		<entity schema="sigap.sigap_anthony" name="vw_carga_masiva_jornada_extendida" color="D1BEF4" x="1843" y="2508" />
 		<entity schema="sigap.sigap_anthony" name="vw_carga_masiva_personal" color="D1BEF4" x="2527" y="2508" />
 		<entity schema="sigap.sigap_anthony" name="vw_carga_masiva_proveedor" color="D1BEF4" x="2185" y="2926" />
@@ -5079,8 +5079,9 @@ select * from (
 		<entity schema="sigap.sigap_anthony" name="tab_directorio" color="F4DDBE" x="1083" y="836" />
 		<entity schema="sigap.sigap_anthony" name="det_personal_contrato" color="F4DDBE" x="57" y="798" />
 		<entity schema="sigap.sigap_anthony" name="tab_personal_servicio" color="C7F4BE" x="2869" y="2052" />
-		<entity schema="sigap.sigap_anthony" name="prueba" color="3986C1" x="3705" y="1843" />
 		<entity schema="sigap.sigap_anthony" name="tab_personal_cas_cap" color="F4DDBE" x="323" y="95" />
+		<entity schema="sigap.sigap_anthony" name="tab_proceso_electoral" color="C7F4BE" x="3268" y="2527" />
+		<entity schema="sigap.sigap_anthony" name="prueba" color="3986C1" x="3249" y="1615" />
 		<group name="tab_actualizar_vigencia_personal" color="ECF0F7" >
 			<entity schema="sigap.sigap_anthony" name="tab_actualizar_vigencia_personal" />
 			<entity schema="sigap.sigap_anthony" name="temp_exact_conflicts_com_2" />
@@ -5104,11 +5105,11 @@ select * from (
 			<entity schema="sigap.sigap_anthony" name="tab_contador_tipo_solicitud" />
 			<entity schema="sigap.sigap_anthony" name="tab_fecha_restriccion" />
 			<entity schema="sigap.sigap_anthony" name="tab_parametro" />
-			<entity schema="sigap.sigap_anthony" name="tab_proceso_electoral" />
 			<entity schema="sigap.sigap_anthony" name="tab_coordinador" />
 			<entity schema="sigap.sigap_anthony" name="det_control_acceso_equipo_vehiculo" />
 			<entity schema="sigap.sigap_anthony" name="tab_control_acceso_personal" />
 			<entity schema="sigap.sigap_anthony" name="tab_personal_servicio" />
+			<entity schema="sigap.sigap_anthony" name="tab_proceso_electoral" />
 		</group>
 		<group name="tab_log" color="ECECF7" >
 			<entity schema="sigap.sigap_anthony" name="tab_log" />
@@ -5366,41 +5367,15 @@ out.println("HTML generado en: ${outputFile}")
 out.println("Fin del script.")
 ]]></string>
 		</script>
-		<browser id="4724d12b-0457-418d-94b1-c4fe0b714c09" name="tab_personal_cas_cap" confirm_updates="y" >
-			<browse_table schema="sigap.sigap_anthony" entity="tab_personal_cas_cap" fk_out="n" x="20" y="20" width="360" height="350" />
-		</browser>
-		<browser id="f5936981-41f6-4909-8d18-cc124adc6a02" name="tab_personal_servicio" confirm_updates="y" >
-			<browse_table schema="sigap.sigap_anthony" entity="tab_personal_servicio" fk_out="n" x="20" y="20" width="437" height="288" >
-				<browse_table schema="sigap.sigap_anthony" entity="det_personal_contrato" fk="cst_det_personal_contrato_fk_02" fk_out="y" x="540" y="32" width="500" height="350" >
-					<browse_table schema="sigap.sigap_anthony" entity="det_solicitud_contrato" fk="cst_det_personal_contrato_fk_01" fk_out="n" x="1080" y="32" width="500" height="350" />
+		<browser id="8b03dc66-837f-4eb3-861c-7b69a6b4005b" name="Editor" confirm_updates="y" >
+			<browse_table schema="sigap.sigap_anthony" entity="tab_proceso_electoral" fk_out="n" x="93" y="31" width="536" height="307" >
+				<browse_table schema="sigap.sigap_anthony" entity="tab_contrato" fk="cst_tab_contrato_fk_03" fk_out="y" x="679" y="55" width="634" height="272" >
+					<browse_table schema="sigap.sigap_anthony" entity="mae_unidad_organica" fk="cst_tab_contrato_fk_02" fk_out="n" x="543" y="386" width="500" height="350" />
+					<browse_table schema="sigap.sigap_anthony" entity="det_solicitud_contrato" fk="cst_det_solicitud_contrato_fk_01" fk_out="y" x="1363" y="51" width="500" height="350" />
+					<browse_table schema="sigap.sigap_anthony" entity="det_solicitud_contrato" fk="cst_det_solicitud_contrato_fk_01" fk_out="y" x="1101" y="548" width="500" height="350" />
 				</browse_table>
 			</browse_table>
 		</browser>
-		<query id="d0cc2e1b-6355-4913-a2bc-e2adca5b9fd2" name="Builder" >
-			<query_table schema="sigap.sigap_anthony" name="tab_personal_cas_cap" alias="tpcc" x="57" y="57" >
-				<column name="c_numero_documento" />
-				<column name="c_apellido_paterno" />
-				<column name="c_apellido_materno" />
-				<column name="c_nombres" />
-				<column name="d_fecha_inicio_contrato" />
-				<column name="d_fecha_fin_contrato" />
-				<column name="d_hora_ingreso" />
-				<column name="d_hora_salida" />
-				<column name="n_sede" />
-				<column name="n_tipo_contrato" />
-				<column name="n_activo" />
-				<column name="n_tipo_contrato" filter=":c in ( 2,3 )" />
-				<column name="d_fecha_inicio_contrato" orderby="asc" />
-				<query_table schema="sigap.sigap_anthony" name="det_personal_contrato" alias="dpc" x="684" y="76" fk="cst_det_personal_contrato_fk_03" type="Inner Join" >
-					<column name="n_personal_servicio" />
-					<column name="n_det_solicitud_contrato" />
-				</query_table>
-				<query_table schema="sigap.sigap_anthony" name="tab_directorio" alias="td" x="684" y="323" fk="cst_tab_directorio_fk_02" type="Left Outer Join" >
-					<column name="n_personal_servicio" />
-					<column name="c_anexo" />
-				</query_table>
-			</query_table>
-		</query>
 	</layout>
 	<layout name="~Diagram with Sample Tools" id="51f37d59-9772-48ba-8633-808a1742daaf" show_column_type="y" show_relation="columns" >
 		<entity schema="sigap.sigap_anthony" name="cab_carga_archivo" color="BED3F4" x="2774" y="3971" />
