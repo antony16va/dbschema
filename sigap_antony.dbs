@@ -960,6 +960,24 @@ AS '$libdir/tablefunc', $function$normal_rand$function$
 				<column name="n_prueba_pk" />
 			</index>
 		</table>
+		<table name="prueba_detalle" spec="" >
+			<column name="n_detalle_pk" type="integer" length="32" mandatory="y" >
+				<defo><![CDATA[nextval('sigap_anthony.prueba_detalle_n_detalle_pk_seq'::regclass)]]></defo>
+			</column>
+			<column name="n_prueba_fk" type="integer" length="32" mandatory="y" />
+			<column name="descripcion" type="varchar" length="200" />
+			<column name="fecha_evento" type="date" length="0" >
+				<defo><![CDATA[CURRENT_DATE]]></defo>
+			</column>
+			<column name="monto" type="decimal" length="10" decimal="2" />
+			<column name="estado" type="varchar" length="50" />
+			<index name="prueba_detalle_pkey" unique="PRIMARY_KEY" >
+				<column name="n_detalle_pk" />
+			</index>
+			<fk name="fk_prueba_detalle_prueba" to_schema="sigap.sigap_anthony" to_table="prueba" >
+				<fk_column name="n_prueba_fk" pk="n_prueba_pk" />
+			</fk>
+		</table>
 		<table name="tab_actualizar_vigencia_personal" generator_rows="100" generator_order="9" row_count="138" spec="" >
 			<comment><![CDATA[Almacena la información de la ejecución del job]]></comment>
 			<column name="n_actualizar_vigencia_personal_pk" type="integer" length="32" mandatory="y" >
@@ -5081,7 +5099,8 @@ select * from (
 		<entity schema="sigap.sigap_anthony" name="tab_personal_servicio" color="C7F4BE" x="2869" y="2052" />
 		<entity schema="sigap.sigap_anthony" name="tab_personal_cas_cap" color="F4DDBE" x="323" y="95" />
 		<entity schema="sigap.sigap_anthony" name="tab_proceso_electoral" color="C7F4BE" x="3268" y="2527" />
-		<entity schema="sigap.sigap_anthony" name="prueba" color="3986C1" x="3249" y="1615" />
+		<entity schema="sigap.sigap_anthony" name="prueba" color="3986C1" x="2983" y="1558" />
+		<entity schema="sigap.sigap_anthony" name="prueba_detalle" color="3986C1" x="3344" y="1634" />
 		<group name="tab_actualizar_vigencia_personal" color="ECF0F7" >
 			<entity schema="sigap.sigap_anthony" name="tab_actualizar_vigencia_personal" />
 			<entity schema="sigap.sigap_anthony" name="temp_exact_conflicts_com_2" />
@@ -5365,6 +5384,12 @@ new File(outputFile).withWriter('UTF-8') { writer ->
 
 out.println("HTML generado en: ${outputFile}")
 out.println("Fin del script.")
+]]></string>
+		</script>
+		<script name="SQL_Editor_002" id="1e8930db-1b4e-4548-a2a9-c88d8198f080" language="SQL" >
+			<string><![CDATA[SELECT table_schema, table_name
+FROM information_schema.tables
+WHERE table_name = 'prueba_detalle';
 ]]></string>
 		</script>
 		<browser id="8b03dc66-837f-4eb3-861c-7b69a6b4005b" name="Editor" confirm_updates="y" >
